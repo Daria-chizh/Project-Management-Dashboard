@@ -58,7 +58,14 @@ export default class Tasks {
     const dropdownValue = document.createElement('div');
     dropdownValue.textContent = selectedProject.name;
     dropdownValue.classList.add('dropdownValue');
-    dropdownValue.addEventListener('click', () => this.renderProjectDropdownList(projects, dropdownElement));
+    dropdownValue.addEventListener('click', () => {
+      const existingList = dropdownElement.querySelector('.dropdownList');
+      if (existingList) {
+        existingList.parentNode.removeChild(existingList);
+      } else {
+        this.renderProjectDropdownList(projects, dropdownElement);
+      }
+    });
 
     const dropdownElement = document.createElement('div');
     dropdownElement.classList.add('dropdown');
@@ -82,46 +89,51 @@ export default class Tasks {
     this.tableElement.appendChild(headerRow);
   }
 
+  /*
+   * Render task name
+   */
+  renderTaskName(project, containerElement) {
+    const taskNameElement = document.createElement('span');
+    taskNameElement.textContent = project.name;
+    containerElement.appendChild(taskNameElement);
+  }
+
+  /*
+   * Render checkbox to mark task as done
+   */
+  renderDoneCheckbox(project, containerElement) {
+    const { id, done } = project;
+
+    const doneCheckbox = document.createElement('input');
+    doneCheckbox.setAttribute('type', 'checkbox');
+    doneCheckbox.classList.add('doneCheckbox');
+
+    doneCheckbox.addEventListener('change', (event) => {
+      this.store.dispatch(Actions.updateDoneState, { id, done: doneCheckbox.checked });
+      event.stopPropagation();
+    });
+
+    if (done === true) {
+      doneCheckbox.setAttribute('checked', 'checked');
+    }
+
+    containerElement.appendChild(doneCheckbox);
+  }
 
   /*
    * Render data row
    */
-  renderRow(name, done, id) {
-    console.log('renderRow()', name, done);
+  renderRow(project) {
+    const cellElement = document.createElement('td');
+    cellElement.classList.add('tableCell');
+    this.renderDoneCheckbox(project, cellElement);
+    this.renderTaskName(project, cellElement);
 
-    const newContainerTr = document.createElement('tr');
-    newContainerTr.classList.add('tableRow');
-    this.tableElement.appendChild(newContainerTr);
+    const dataRow = document.createElement('tr');
+    dataRow.classList.add('tableRow');
+    dataRow.appendChild(cellElement);
 
-    const newContainerTd = document.createElement('td');
-    newContainerTd.classList.add('tableCell');
-    newContainerTr.appendChild(newContainerTd);
-
-    const checkBoxElement = document.createElement('input');
-    checkBoxElement.setAttribute('type', 'checkbox');
-    checkBoxElement.classList.add('checkBoxElement');
-    newContainerTd.appendChild(checkBoxElement);
-
-
-
-    const divContainer = document.createElement('span');
-    divContainer.textContent = name;
-    divContainer.classList.add('elementsTableTd');
-    newContainerTd.appendChild(divContainer);
-
-    checkBoxElement.addEventListener('click', (event) => {
-      event.stopPropagation();
-      console.log(id);
-      this.store.dispatch(Actions.updateDoneState, { id, done });
-    });
-    if (done === true) {
-      checkBoxElement.setAttribute('checked', 'checked');
-    }
-
-
-
-    // когда кликают на checkbox:
-    // this.store.dispatch(Actions.updateDoneState, { id, done });
+    this.tableElement.appendChild(dataRow);
   }
 
   render() {
@@ -136,8 +148,8 @@ export default class Tasks {
 
     const project = projects.find((item) => item.id === this.projectId);
     this.renderHeaderRow(projects, project);
-    for (const { name, done } of project.tasks) {
-      this.renderRow(name, done);
+    for (const project of project.tasks) {
+      this.renderRow(project);
     }
   }
 };
