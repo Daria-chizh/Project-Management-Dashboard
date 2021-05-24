@@ -152,4 +152,4 @@ export default class Tasks {
       this.renderRow(project);
     }
   }
-};
+}

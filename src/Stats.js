@@ -12,7 +12,6 @@ export default class Stats {
    * Render single table cell (<td>)
    */
   renderTableCell(row, content, className) {
-
     const innerElement = document.createElement('span');
     if (className) {
       innerElement.classList.add(className);
@@ -47,6 +46,7 @@ export default class Stats {
     this.renderTableCell(dataRow, count, 'openTasksCount');
     this.tableElement.appendChild(dataRow);
   }
+
   render() {
     this.tableElement.replaceChildren();
     this.renderHeaderRow();
@@ -55,10 +55,10 @@ export default class Stats {
       let counter = 0;
       for (const element of tasks) {
         if (element.done === false) {
-          counter++;
+          counter += 1;
         }
       }
       this.renderRow(name, counter);
     }
   }
-};
+}

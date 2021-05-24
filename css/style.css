@@ -57,7 +57,6 @@ span {
 }
 
 .dropdownList {
-  /*position: absolute;*/
   position: relative;
   list-style-type: none;
   padding: 0;
@@ -89,6 +88,10 @@ span {
   color: white;
   font-size: 20px;
   border-radius: 10px;
+  display: inline-block;
+  border: 1px solid black;
+  width: 40px;
+  text-align: center;
 }
 
 .doneCheckbox {
