@@ -39,22 +39,18 @@ export default class Tasks {
     dropdownList.classList.add('dropdownList');
 
     for (const { name, id } of projects) {
-      if (id === this.projectId) {
-        continue;
+      if (id !== this.projectId) {
+        this.renderProjectDropdownItem(name, id, dropdownList);
       }
-
-      this.renderProjectDropdownItem(name, id, dropdownList);
     }
 
     dropdown.appendChild(dropdownList);
   }
 
   /*
-   * Render dropdown to select project
+   * Render dropdown currently selected item
    */
-  renderProjectDropdown(projects, selectedProject, containerElement) {
-    const dropdownTitle = document.createTextNode('Project:');
-
+  renderProjectDropdownCurrentValue(projects, selectedProject, dropdownElement) {
     const dropdownValue = document.createElement('div');
     dropdownValue.textContent = selectedProject.name;
     dropdownValue.classList.add('dropdownValue');
@@ -66,11 +62,18 @@ export default class Tasks {
         this.renderProjectDropdownList(projects, dropdownElement);
       }
     });
+  }
+
+  /*
+   * Render dropdown to select project
+   */
+  renderProjectDropdown(projects, selectedProject, containerElement) {
+    const dropdownTitle = document.createTextNode('Project:');
 
     const dropdownElement = document.createElement('div');
     dropdownElement.classList.add('dropdown');
     dropdownElement.appendChild(dropdownTitle);
-    dropdownElement.appendChild(dropdownValue);
+    this.renderProjectDropdownCurrentValue(projects, selectedProject, dropdownElement);
 
     containerElement.appendChild(dropdownElement);
   }
@@ -92,17 +95,17 @@ export default class Tasks {
   /*
    * Render task name
    */
-  renderTaskName(project, containerElement) {
+  static renderTaskName(task, containerElement) {
     const taskNameElement = document.createElement('span');
-    taskNameElement.textContent = project.name;
+    taskNameElement.textContent = task.name;
     containerElement.appendChild(taskNameElement);
   }
 
   /*
    * Render checkbox to mark task as done
    */
-  renderDoneCheckbox(project, containerElement) {
-    const { id, done } = project;
+  renderDoneCheckbox(task, containerElement) {
+    const { id, done } = task;
 
     const doneCheckbox = document.createElement('input');
     doneCheckbox.setAttribute('type', 'checkbox');
@@ -123,11 +126,11 @@ export default class Tasks {
   /*
    * Render data row
    */
-  renderRow(project) {
+  renderRow(task) {
     const cellElement = document.createElement('td');
     cellElement.classList.add('tableCell');
-    this.renderDoneCheckbox(project, cellElement);
-    this.renderTaskName(project, cellElement);
+    this.renderDoneCheckbox(task, cellElement);
+    Tasks.renderTaskName(task, cellElement);
 
     const dataRow = document.createElement('tr');
     dataRow.classList.add('tableRow');
@@ -148,8 +151,8 @@ export default class Tasks {
 
     const project = projects.find((item) => item.id === this.projectId);
     this.renderHeaderRow(projects, project);
-    for (const project of project.tasks) {
-      this.renderRow(project);
+    for (const task of project.tasks) {
+      this.renderRow(task);
     }
   }
 }

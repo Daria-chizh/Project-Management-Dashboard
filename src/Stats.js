@@ -11,7 +11,7 @@ export default class Stats {
   /*
    * Render single table cell (<td>)
    */
-  renderTableCell(row, content, className) {
+  static renderTableCell(row, content, className) {
     const innerElement = document.createElement('span');
     if (className) {
       innerElement.classList.add(className);
@@ -31,8 +31,8 @@ export default class Stats {
   renderHeaderRow() {
     const headerRow = document.createElement('tr');
     headerRow.classList.add('tableRow');
-    this.renderTableCell(headerRow, 'Project');
-    this.renderTableCell(headerRow, 'Open');
+    Stats.renderTableCell(headerRow, 'Project');
+    Stats.renderTableCell(headerRow, 'Open');
     this.tableElement.appendChild(headerRow);
   }
 
