@@ -50,15 +50,15 @@ export default class Stats {
   render() {
     this.tableElement.replaceChildren();
     this.renderHeaderRow();
-    let counter = 0;
 
     for (const { name, tasks } of this.store.getState()) {
-      for(const element of tasks) {
+      let counter = 0;
+      for (const element of tasks) {
         if (element.done === false) {
           counter++;
         }
       }
-          this.renderRow(name, counter);
-        }
+      this.renderRow(name, counter);
     }
+  }
 };
