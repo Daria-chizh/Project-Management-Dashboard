@@ -19,7 +19,7 @@ const findTaskById = (state, id) => {
  */
 const updateDoneState = (state, payload) => {
   const { id, done } = payload;
-  const task = findTaskById(id);
+  const task = findTaskById(state, id);
   if (task) {
     task.done = done;
   }
