@@ -42,8 +42,8 @@ export default class Stats {
   renderRow(name, count) {
     const dataRow = document.createElement('tr');
     dataRow.classList.add('tableRow');
-    this.renderTableCell(dataRow, name);
-    this.renderTableCell(dataRow, count, 'openTasksCount');
+    Stats.renderTableCell(dataRow, name);
+    Stats.renderTableCell(dataRow, count, 'openTasksCount');
     this.tableElement.appendChild(dataRow);
   }
 
