@@ -5,7 +5,7 @@ export default class Stats {
   }
 
   run() {
-    this.store.subscribe(() => this.render());
+    this.store.subscribe((state) => this.render(state));
   }
 
   /*
@@ -47,11 +47,11 @@ export default class Stats {
     this.tableElement.appendChild(dataRow);
   }
 
-  render() {
+  render(projects) {
     this.tableElement.replaceChildren();
     this.renderHeaderRow();
 
-    for (const { name, tasks } of this.store.getState()) {
+    for (const { name, tasks } of projects) {
       let counter = 0;
       for (const element of tasks) {
         if (element.done === false) {

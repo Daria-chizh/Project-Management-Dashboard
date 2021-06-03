@@ -17,7 +17,7 @@ export default class Store {
     this.state = applyReducer(this.state, action, payload);
 
     for (const fn of this.subscribers) {
-      fn();
+      fn(this.state);
     }
   }
 

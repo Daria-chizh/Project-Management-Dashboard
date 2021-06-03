@@ -8,7 +8,7 @@ export default class Tasks {
   }
 
   run() {
-    this.store.subscribe(() => this.render());
+    this.store.subscribe((state) => this.render(state));
   }
 
   /*
@@ -21,7 +21,7 @@ export default class Tasks {
     itemElement.textContent = name;
     itemElement.addEventListener('click', (event) => {
       this.projectId = id;
-      this.render();
+      this.render(this.store.getState());
       event.preventDefault();
     });
 
@@ -139,9 +139,7 @@ export default class Tasks {
     this.tableElement.appendChild(dataRow);
   }
 
-  render() {
-    const projects = this.store.getState();
-
+  render(projects) {
     this.tableElement.replaceChildren();
 
     // select first project, if it's initial run
