@@ -27,7 +27,7 @@ span {
   width: 30%;
 }
 
-.tasksContainer {
+#tasksContainer {
   float: right;
   min-height: 90vh;
   width: 50%;

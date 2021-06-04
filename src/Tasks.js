@@ -62,6 +62,7 @@ export default class Tasks {
         this.renderProjectDropdownList(projects, dropdownElement);
       }
     });
+    dropdownElement.appendChild(dropdownValue);
   }
 
   /*
